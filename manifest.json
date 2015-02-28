@@ -16,5 +16,9 @@
 
   "permissions": [
     "storage", "tabs"
+  ],
+
+  "web_accessible_resources": [
+    "images/"
   ]
 }

@@ -1,7 +1,22 @@
 
 .continueCustomButton {
-	min-width: 100px !important;
 	min-height: 20px !important;
-	background-color: #fff !important;
+	background-color: #cc181e !important;
+	margin-left: 20px;
+	margin-top: 3px;
+	padding-top: 2px;
+	padding-right: 10px;
+	padding-left: 5px;
+	text-align: right;
+	vertical-align: middle;
+}
 
+#continue-icon {
+	float: left;
+	width: 16px;
+}
+
+#continue-label {
+	float: right;
+	margin-left: 20px;
 }

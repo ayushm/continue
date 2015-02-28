@@ -12,6 +12,17 @@ player.insertBefore(button,player.childNodes[4]);
 
 console.log(button);
 
+var iconURL = chrome.extension.getURL('images/loco_icon.png');
+var icon = document.createElement('IMG');
+icon.src = iconURL;
+icon.id = "continue-icon";
+
+var continueLabel = document.createElement('P');
+continueLabel.value = "continue";
+continueLabel.id = "continue-label";
+
+button.appendChild(icon);
+button.appendChild(continueLabel);
 
 
 function test() {
