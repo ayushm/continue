@@ -8,7 +8,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*","https://api.twilio.com/*"],
+      "matches": ["https://www.youtube.com/*"],
       "css": ["continue.css"],
       "js": ["continue.js"]
     }

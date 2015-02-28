@@ -18,21 +18,27 @@ function test() {
 	var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');
 	alert(time);
 
+	//var shareInput = document.getElementsByClassName('yt-uix-form-input-text share-panel-url')[0].value;
+	var videoURL = getVideoParameterFromURL(); //shareInput.substring(shareInput.indexOf('tu.be/')+6);
+
 	
 	var userNumber;
-	chrome.storage.sync.get("usernumber", function(data) {
-		userNumber = data.usernumber;
+	chrome.storage.sync.get("phone", function(data) {
+		userNumber = data.phone;
+
+		if(userNumber==null || userNumber=="undefined") {
+			alert("You have not set your phone number yet. Please visit the extension settings page to do this.");
+		} else {
+			var url = "http://ayushmehra.com/continue/sendText.php?youtube="+videoURL+"&phone="+userNumber+"&time="+time;
+
+			alert(url);
+
+			//var win = window.open(url, '_blank');
+		}
+
 	});
 
-	if(userNumber==null || userNumber=="undefined") {
-		alert("You have not set your phone number yet. Please visit the extension settings page to do this.");
-	} else {
-		var url = "http://ayushmehra.com/continue/sendText.php?youtube="+userNumber;
-
-		alert(url);
-
-		//var win = window.open(url, '_blank');
-	}
+	
 
 
 	
@@ -90,6 +96,13 @@ function test() {
 
 */
 
+}
+
+function getVideoParameterFromURL() {
+    param = 'v'.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + param + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 /*
