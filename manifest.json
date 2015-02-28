@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "Continue",
+  "description": "This extension texts you a link to continue a YouTube video where you left off, at the push of a button.",
+  "version": "1.0",
+  "options_page":"continue_options.html",
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*","https://api.twilio.com/*"],
+      "css": ["continue.css"],
+      "js": ["continue.js"]
+    }
+  ],
+
+  "permissions": [
+    "storage", "tabs"
+  ]
+}
