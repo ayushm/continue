@@ -16,7 +16,6 @@ chrome.storage.sync.get("phone", function(data) {
 	}
 });
 
-
 document.getElementById('submit-button').addEventListener("click", function() {
 	var text = document.getElementById('number-text-field').value;
 
