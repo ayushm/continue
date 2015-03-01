@@ -1,57 +1,24 @@
-
-var player = document.getElementsByClassName('html5-player-chrome')[0];
-
-var button = document.createElement('DIV');
-button.className = "ytp-button continueCustomButton";
-button.setAttribute('tabindex',"6201");
-
-button.onclick = openSettingsMenu;
-
-player.insertBefore(button,player.childNodes[4]);
-
-console.log(button);
-
-var logoURL = chrome.extension.getURL('images/logo_medium.png');
-var iconURL = chrome.extension.getURL('images/logo_icon.png');
-var icon = document.createElement('IMG');
-icon.src = iconURL;
-//icon.src = "https://farm9.staticflickr.com/8115/8673546462_73b2df8cb3.jpg";
-icon.id = "continue-icon";
-
-var continueLabel = document.createElement('P');
-continueLabel.innerHTML = "continue";
-continueLabel.id = "continue-label";
-
-button.appendChild(icon);
-button.appendChild(continueLabel);
-
-
-
-
-var settingsDiv = document.createElement('DIV');
-settingsDiv.className = "ytp-menu-container";
-settingsDiv.id="continueSettingsContainer";
-
-//settingsDiv.innerHTML = '<div id="continueContainerHeader"><img id="continueLogo" src="'+logoURL+'" width="50px"/><h1 id="continueHeader">continue</h1></div><br><br><br><div id="phoneNumberContainer"></div><br/><button value="update" id="updateNumberButton">Update Number</button><br/><button value="send" id="continueSubmitButton">Send</button>';
-settingsDiv.innerHTML = '<div id="numberContainer"><h1 id="numberHeader"></h1></div><button class="continueButton" id="setNumberButton">set one now</button><button class="continueButton" id="sendTextButton">continue there <img src="'+logoURL+'" width="32px" style="vertical-align:middle;"/></button>';
-settingsDiv.style.display = "none";
-
-
-var defaultMenu = document.getElementsByClassName('ytp-menu-container')[0];
-defaultMenu.parentNode.insertBefore(settingsDiv,defaultMenu);
-
-var sendTextButton = document.getElementById('sendTextButton');
-var setNumberButton = document.getElementById('setNumberButton');
-var phoneDiv = document.getElementById('numberHeader');
-
-setNumberButton.onclick = function() {window.open(chrome.extension.getURL('continue_options.html'),'_blank')};
-sendTextButton.onclick = sendTextButtonPressed;
-
 var userNumber;
+var settingsDiv;
+var sendTextButton;
+var setNumberButton;
+var phoneDiv;
+
+
+
+if(document.getElementsByClassName('html5-player-chrome').length>0) {
+	init();
+}
+
+
+setInterval(function(){
+	if(!document.getElementById('setNumberButton')) {
+		init();
+	}
+},5000);
 
 
 function openSettingsMenu() {
-	var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');
 	//alert(time);
 
 	//var shareInput = document.getElementsByClassName('yt-uix-form-input-text share-panel-url')[0].value;
@@ -72,8 +39,6 @@ function openSettingsMenu() {
 
 
 		} else {
-			console.log('reachedadsfasdfasdf');
-			var url = "http://ayushmehra.com/continue/sendText.php?youtube="+videoURL+"&phone="+userNumber+"&time="+time;
 
 			var formattedNumber = "";
 
@@ -85,11 +50,6 @@ function openSettingsMenu() {
 			formattedNumber = formattedNumber+"("+userNumber.substring(0,3)+") "+userNumber.substring(3,6)+"-"+userNumber.substring(6);
 
 			phoneDiv.innerHTML = formattedNumber;
-
-			//alert(url);
-
-			//var win = window.open(url, '_blank');
-			// 1234567890
 		}
 
 	});
@@ -137,9 +97,56 @@ function sendTextButtonPressed() {
 	window.open(url,'_blank');
 }
 
-function processInput() {
-	alert('hello');
-	document.getElementById('numberPopup').style.display = "none";
+
+function init() {
+	var player = document.getElementsByClassName('html5-player-chrome')[0];
+
+	var button = document.createElement('DIV');
+	button.className = "ytp-button continueCustomButton";
+	button.setAttribute('tabindex',"6201");
+
+	button.onclick = openSettingsMenu;
+
+	player.insertBefore(button,player.childNodes[4]);
+
+	console.log(button);
+
+	var logoURL = chrome.extension.getURL('images/logo_medium.png');
+	var iconURL = chrome.extension.getURL('images/logo_icon.png');
+	var icon = document.createElement('IMG');
+	icon.src = iconURL;
+	//icon.src = "https://farm9.staticflickr.com/8115/8673546462_73b2df8cb3.jpg";
+	icon.id = "continue-icon";
+
+	var continueLabel = document.createElement('P');
+	continueLabel.innerHTML = "continue";
+	continueLabel.id = "continue-label";
+
+	button.appendChild(icon);
+	button.appendChild(continueLabel);
+
+
+
+
+	settingsDiv = document.createElement('DIV');
+	settingsDiv.className = "ytp-menu-container";
+	settingsDiv.id="continueSettingsContainer";
+
+	//settingsDiv.innerHTML = '<div id="continueContainerHeader"><img id="continueLogo" src="'+logoURL+'" width="50px"/><h1 id="continueHeader">continue</h1></div><br><br><br><div id="phoneNumberContainer"></div><br/><button value="update" id="updateNumberButton">Update Number</button><br/><button value="send" id="continueSubmitButton">Send</button>';
+	settingsDiv.innerHTML = '<div id="numberContainer"><h1 id="numberHeader"></h1></div><button class="continueButton" id="setNumberButton">set one now</button><button class="continueButton" id="sendTextButton">continue there <img src="'+logoURL+'" width="32px" style="vertical-align:middle;"/></button>';
+	settingsDiv.style.display = "none";
+
+
+	var defaultMenu = document.getElementsByClassName('ytp-menu-container')[0];
+	defaultMenu.parentNode.insertBefore(settingsDiv,defaultMenu);
+
+	sendTextButton = document.getElementById('sendTextButton');
+	setNumberButton = document.getElementById('setNumberButton');
+	phoneDiv = document.getElementById('numberHeader');
+
+	setNumberButton.onclick = function() {var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');window.location = chrome.extension.getURL('continue_options.html')+"?video="+getVideoParameterFromURL()+"&time="+time;};
+	sendTextButton.onclick = sendTextButtonPressed;
+
 }
 
 

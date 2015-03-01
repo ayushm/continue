@@ -1,19 +1,108 @@
 <html>
 
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Dosis:200,400,600' rel='stylesheet' type='text/css'>
+</head>
+
+
 <body>
+	
+	<div id="logoContainer">
+		<img src="" id="logo"/>
+		<h1 id="logoLabel">continue</h1>
+	</div>
 
-<input type='text' id='number-text-field'></input>
-<input type='submit' id='submit-button' value="Update Number"/>
+	<div id="fieldContainer">
+		<input type='text' id='number-text-field'></input>
+		<button id='submit-button'/>Update Number</button>
+	</div>
 
-
-
+	<div id="infoDiv">
+		<h1 id="guide">Please enter your phone number without any formatting. E.g. 14083219432 (country code optional)</h1><br>
+		<h1 id="message">After updating your number, you will be taken back to your video, exactly where you left off.</h1>
+	</div>
 
 <script language="javascript" type="text/javascript" src="continue_options.js"></script>
 
 
-
 </body>
 
+
+<style>
+
+body {
+	background-color: rgba(204,24,30,0.8);
+	text-align: center;
+}
+
+#logoContainer {
+	position: absolute;
+	width: 50%;
+	left: 50%;
+	margin-left: -25%;
+	margin-top: 3%;
+}
+
+#logo {
+	width: 40%;
+	float: left;
+}
+
+#logoLabel {
+	font-family: "Dosis", 'sans-serif';
+	font-weight: 400;
+	font-size: 7vw;
+	color: #fff;
+	margin-left: 5%;
+	float: right;
+}
+
+#fieldContainer {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top: 55%;
+}
+
+#number-text-field {
+	width: 30%;
+	font-size: 3em;
+	padding: 5px 10px;
+	height: 60px;
+	font-family: 'Dosis', 'sans-serif';
+	vertical-align: middle;
+	outline: none;
+	border: none;
+}
+
+#submit-button {
+	width: 20%;
+	font-size: 2em;
+	padding: 5px 10px;
+	height: 60px;
+	font-family: 'Dosis', 'sans-serif';
+	vertical-align: middle;
+	color: #fff;
+	background-color: rgba(31,31,31,0.6);
+	outline: none;
+	border: none;
+}
+
+#submit-button:hover {
+	cursor: pointer;
+	background-color: rgba(31,31,31,0.8);
+}
+
+#infoDiv {
+	width: 100%;
+	position: absolute;
+	bottom: 10%;
+	color: #fff;
+	font-family: 'Dosis', 'sans-serif';
+	text-align: center;
+}
+
+</style>
 
 
 </html>
