@@ -1,8 +1,122 @@
 <html>
-hello
+<head><link href='http://fonts.googleapis.com/css?family=Dosis:200,400,600' rel='stylesheet' type='text/css'>
+</head>
+<div id="numberPopup">
+
+<img src="chrome-extension://nmgnohconkldmjidgbcikocgimbambnf/images/logo_medium.png" id="popupLogo"/>
+<div id="popupLabelContainer"><h1 id="popupLabelHeader">continue</h1></div>
+	<div id="textFieldContainer">
+		<input type="text" maxlength="2" id="countryCode"/>(<input type="text" maxlength="3" id="areaCode"/>)<input type="text" maxlength="3" id="firstThree"/>-<input type="text" maxlength="4" id="lastFour"/><br/><button onclick="processInput" type="submit" id="popupSubmitButton">set number</buton>
+	</div>
+
+	<button id="closePopup">x</button>
+
+</div>
+
+<script>
+//document.getElementById('popupSubmitButton').onclick = processInput;
+
+var processInput = function() {
+	alert('hello');
+}
+
+
+</script>
+
+<style>
+
+#numberPopup {
+	position: fixed;
+	width: 50%;
+	left: 25%;
+	background-color: rgba(204,24,30,0.9);
+	height: 60%;
+	top: 20%;
+	z-index: 1000;
+	display: inline-block;
+	box-shadow: 0 0 50px #000;
+}
+
+#popupLogo {
+	width: 25%;
+	padding: 10px;
+}
+
+#popupLabelContainer {	
+	position: absolute;
+	top: -5vh;
+	left: 35%;
+}
+
+#popupLabelHeader {
+	font-family: "Dosis", 'sans-serif';
+	font-weight: 400;
+	font-size: 7vw;
+	color: #fff;
+}
+
+#textFieldContainer {
+	font-size: 5vw;
+	color: #fff;
+	width: 100%;
+	text-align: center;
+}
+
+#textFieldContainer input[type='text']{
+	font-size: 3vw;
+	outline: none;
+	text-align: center;
+}
+
+#countryCode {
+	width: 10vh;
+}
+
+#areaCode, #firstThree {
+	width: 15vh;
+}
+
+#lastFour {
+	width: 20vh;
+}
+
+#popupSubmitButton {
+	width: 72.5%;
+	height: 15%;
+	margin-top: 3vh;
+	background-color: rgba(31,31,31,0.65);
+	border: none;
+	outline: none;
+	color: #fff;
+	font-size: 5vh;
+	font-family: 'Dosis', 'sans-serif';
+}
+
+#popupSubmitButton:hover {
+	background-color: rgba(31,31,31,0.9);
+	cursor: pointer;
+}
+
+#closePopup {
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin-right: 10px;
+	margin-top: 10px;
+	font-size: 7vh;
+	font-family: 'Dosis', 'sans-serif';
+	padding: 2vh;
+	background-color: rgba(0,0,0,0);
+	color: #fff;
+	outline: none;
+	border: none;
+}
+
+#closePopup:hover {
+	cursor: pointer;
+}
+
+</style>
+
 
 </html>
-<img src="" width="50px"/><h2>continue</h2>
-<input type="text" id="areaCode"/><input type="text" id="firstThree"/><input type="text" id="lastFour"/><br/>
-<button value="update" id="updateNumberButton">Update Number</button><br/>
-<button value="send" id="continueSubmitButton">Send</button>

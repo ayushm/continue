@@ -15,10 +15,10 @@
   ],
 
   "permissions": [
-    "storage", "tabs"
+    "storage", "tabs", "https://fonts.googleapis.com/*"
   ],
 
   "web_accessible_resources": [
-    "images/*", "*"
+    "images/*", "*", "fonts/*"
   ]
 }

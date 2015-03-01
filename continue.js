@@ -1,4 +1,3 @@
-console.log('hello');
 
 var player = document.getElementsByClassName('html5-player-chrome')[0];
 
@@ -6,7 +5,7 @@ var button = document.createElement('DIV');
 button.className = "ytp-button continueCustomButton";
 button.setAttribute('tabindex',"6201");
 
-button.onclick = test;
+button.onclick = openSettingsMenu;
 
 player.insertBefore(button,player.childNodes[4]);
 
@@ -33,14 +32,25 @@ var settingsDiv = document.createElement('DIV');
 settingsDiv.className = "ytp-menu-container";
 settingsDiv.id="continueSettingsContainer";
 
-settingsDiv.innerHTML = '<img id="continueLogo" src="'+logoURL+'" width="50px"/><h1 id="continueHeader">continue</h1>( <input class="phoneTextField" type="text" id="areaCode"/> ) <input class="phoneTextField" type="text" id="firstThree"/> &#8212 <input class="phoneTextField" type="text" id="lastFour"/><br/><button value="update" id="updateNumberButton">Update Number</button><br/><button value="send" id="continueSubmitButton">Send</button>';
+//settingsDiv.innerHTML = '<div id="continueContainerHeader"><img id="continueLogo" src="'+logoURL+'" width="50px"/><h1 id="continueHeader">continue</h1></div><br><br><br><div id="phoneNumberContainer"></div><br/><button value="update" id="updateNumberButton">Update Number</button><br/><button value="send" id="continueSubmitButton">Send</button>';
+settingsDiv.innerHTML = '<div id="numberContainer"><h1 id="numberHeader"></h1></div><button class="continueButton" id="setNumberButton">set one now</button><button class="continueButton" id="sendTextButton">continue there <img src="'+logoURL+'" width="32px" style="vertical-align:middle;"/></button>';
+settingsDiv.style.display = "none";
 
 
 var defaultMenu = document.getElementsByClassName('ytp-menu-container')[0];
 defaultMenu.parentNode.insertBefore(settingsDiv,defaultMenu);
 
+var sendTextButton = document.getElementById('sendTextButton');
+var setNumberButton = document.getElementById('setNumberButton');
+var phoneDiv = document.getElementById('numberHeader');
 
-function test() {
+setNumberButton.onclick = function() {window.open(chrome.extension.getURL('continue_options.html'),'_blank')};
+sendTextButton.onclick = sendTextButtonPressed;
+
+var userNumber;
+
+
+function openSettingsMenu() {
 	var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');
 	//alert(time);
 
@@ -48,26 +58,33 @@ function test() {
 	var videoURL = getVideoParameterFromURL(); //shareInput.substring(shareInput.indexOf('tu.be/')+6);
 
 	
-	var userNumber;
 	chrome.storage.sync.get("phone", function(data) {
 		userNumber = data.phone;
 
 		if(userNumber==null || userNumber=="undefined") {
-			alert("You have not set your phone number yet. Please visit the extension settings page to do this.");
+			//alert("You have not set your phone number yet. Please visit the extension settings page to do this.");
+
+			phoneDiv.innerHTML = "no # found";
+
+			sendTextButton.style.display = "none";
+			setNumberButton.style.display = "inline";
+
+
+
 		} else {
+			console.log('reachedadsfasdfasdf');
 			var url = "http://ayushmehra.com/continue/sendText.php?youtube="+videoURL+"&phone="+userNumber+"&time="+time;
 
-			var areaCodeNode = document.getElementById('areaCode');
-			var firstThreeNode = document.getElementById('firstThree');
-			var lastFourNode = document.getElementById('lastFour');
+			var formattedNumber = "";
 
 			if(userNumber.length==11) {
+				formattedNumber = userNumber.substring(0,1);
 				userNumber = userNumber.substring(1);
 			}
 
-			areaCodeNode.value = userNumber.substring(0,3);
-			firstThreeNode.value = userNumber.substring(3,6);
-			lastFourNode.value = userNumber.substring(6);
+			formattedNumber = formattedNumber+"("+userNumber.substring(0,3)+") "+userNumber.substring(3,6)+"-"+userNumber.substring(6);
+
+			phoneDiv.innerHTML = formattedNumber;
 
 			//alert(url);
 
@@ -77,63 +94,13 @@ function test() {
 
 	});
 
-	
-
-
-	
-
-/*
-	var frame = document.createElement('IFRAME');
-	document.body.appendChild(frame);
-	frame.src = url;
-	//frame.style="display:none;";
-	console.log(frame);
+	if(settingsDiv.style.display=="none") {
+		settingsDiv.style.display="inline";
+	} else {
+		settingsDiv.style.display="none";
+	}
 
 	
-
-	var request = new XMLHttpRequest();
-	var url = "http://ayushmehra.com/continue/sendText.php?youtube=asadf";
-	request.open("GET", url, true);
-	request.send();
-
-	var account_sid = "87bb86c97d1f07940927119197070239";        
-	var auth_token = "AC32cd17ac887d4db94e7b49efceb40cb3";
-	var fromNumber = "+16693420095"; // test number
-	var toNumber = "+14087592950";
-	var text = "hello here is the time: "+time+" seconds";
-
-	var fromNumberEnc = encodeURIComponent(fromNumber); 
-	var toNumberEnc = encodeURIComponent(toNumber);
-	var textEnc = encodeURIComponent(text);
-
-	var request = new XMLHttpRequest();
-	var url = "https://" + account_sid + ":" + auth_token + "@api.twilio.com/2010-04-01/Accounts/" + account_sid + "/SMS/Messages.json";
-	request.open("POST", url, true);
-	var postData = "From="+fromNumberEnc+"&To="+toNumberEnc+"&Body="+textEnc;
-	request.send(postData);
-
-	
-
-	var account_sid = "87bb86c97d1f07940927119197070239";        
-	var auth_token = "AC32cd17ac887d4db94e7b49efceb40cb3";
-	var fromNumber = "+16693420095"; // test number
-	var toNumber = "+14087592950";
-	var text = "hello here is the time: "+time+" seconds";
-
-	var fromNumberEnc = encodeURIComponent(fromNumber); 
-	var toNumberEnc = encodeURIComponent(toNumber);
-	var textEnc = encodeURIComponent(text);
-	var body = "From=" + fromNumberEnc + "&To=" + toNumberEnc + "&Body=" + textEnc;
-    httpRequest.post({
-        url: "https://" + account_sid + ":" + auth_token +
-             "@api.twilio.com/2010-04-01/Accounts/" + account_sid + "/SMS/Messages.json",
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        body: body
-    }, function (err, resp, body) {
-        console.log(body);
-    });
-
-*/
 
 }
 
@@ -144,23 +111,35 @@ function getVideoParameterFromURL() {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-/*
 
 
-var x = document.getElementById('watch-action-panels').style="display: box;";
-x.className = "watch-action-panels yt-uix-button-panel yt-card yt-card-has-padding";
 
-var time = document.getElementsByClassName('share-panel-start-at-time')[0].value;
+function setNumberButtonPressed() {
 
-var button = document.createElement('DIV');
-button.className = "yt-uix-button yt-uix-button-size-default continueCustomButton";
-//button.setAttribute('tabindex',"6201");
+	if(document.getElementById('numberPopup')==null) {
+		console.log('helloasdf');
+		var setNumberPopup = document.createElement('DIV');
+		setNumberPopup.id = "numberPopup";
+		setNumberPopup.innerHTML = '<img src="chrome-extension://nmgnohconkldmjidgbcikocgimbambnf/images/logo_medium.png" id="popupLogo"/><div id="popupLabelContainer"><h1 id="popupLabelHeader">continue</h1></div><div id="textFieldContainer"><input type="text" maxlength="2" id="countryCode"/>(<input type="text" maxlength="3" id="areaCode"/>)<input type="text" maxlength="3" id="firstThree"/>-<input type="text" maxlength="4" id="lastFour"/><br/><button onclick="closePopup()" id="closePopupButton">cancel</button><button onclick="processInput()" id="popupSubmitButton">set number</button></div>';
+		document.body.appendChild(setNumberPopup);
+	} else {
+		document.getElementById('numberPopup').style.display = "inline";
+	}
 
-var buttonContainer = document.getElementById('watch8-secondary-actions');
+	
 
-buttonContainer.appendChild(button);
+}
 
-console.log(button);
+function sendTextButtonPressed() {
+	var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');
+	var videoURL = getVideoParameterFromURL();
+	var url = chrome.extension.getURL('sendText.html')+"?youtube="+videoURL+"&phone="+userNumber+"&time="+time;
+	window.open(url,'_blank');
+}
+
+function processInput() {
+	alert('hello');
+	document.getElementById('numberPopup').style.display = "none";
+}
 
 
-*/

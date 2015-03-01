@@ -35,6 +35,7 @@ document.getElementById('submit-button').addEventListener("click", function() {
 		chrome.storage.sync.get("phone", function(data) {
 			x = data.phone;
 			console.log("x:"+x);
+			window.close();
 		});
 		
 	} else {
