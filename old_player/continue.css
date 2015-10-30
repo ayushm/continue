@@ -14,7 +14,7 @@
 
 .continueCustomButton {
 	height: 100%;
-	//background-color: #cc181e !important;
+	background-color: #cc181e !important;
 	margin-left: 20px;
 	margin-top: 2px;
 	padding-right: 7px;
@@ -25,8 +25,7 @@
 
 #continue-icon {
 	float: left;
-	//width: 16px;
-	width: 60%;
+	width: 16px;
 	padding-top: 4px;
 }
 
@@ -38,15 +37,13 @@
 
 #continueSettingsContainer {
 	padding-bottom: 20px;
-	//left: 20%;
+	left: 20%;
 	//background-color: rgba(204,24,30,0.8);
 	background-color: rgba(31,31,31,0.9);
 	max-width: 200px;
 	text-align: center;
 	color: #fff;
 	padding-right: 10px;
-	z-index: 70;
-	//bottom: 49px;
 }
 
 

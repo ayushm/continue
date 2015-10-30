@@ -1,12 +1,9 @@
 document.getElementById('logo').src = chrome.extension.getURL('images/logo_large.png');
-//var time = getParameterByName('time');
-var hours = getParameterByName('h');
-var minutes = getParameterByName('m');
-var seconds = getParameterByName('s');
+var time = getParameterByName('time');
 var youtube = getParameterByName('youtube');
 var number = getParameterByName('phone');
 
-var url = "http://ayushmehra.com/continue/sendText.php?youtube="+youtube+"&phone="+number+"&h="+hours+"&m="+minutes+"&s="+seconds;
+var url = "http://ayushmehra.com/continue/sendText.php?youtube="+youtube+"&phone="+number+"&time="+time;
 
 console.log(url);
 

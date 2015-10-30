@@ -12,10 +12,10 @@ if(document.getElementsByClassName('html5-player-chrome').length>0) {
 
 
 setInterval(function(){
-	if(!document.getElementById('continuePlayerButton')) {
+	if(!document.getElementById('setNumberButton')) {
 		init();
 	}
-},3000);
+},5000);
 
 
 function openSettingsMenu() {
@@ -77,6 +77,7 @@ function getVideoParameterFromURL() {
 function setNumberButtonPressed() {
 
 	if(document.getElementById('numberPopup')==null) {
+		console.log('helloasdf');
 		var setNumberPopup = document.createElement('DIV');
 		setNumberPopup.id = "numberPopup";
 		setNumberPopup.innerHTML = '<img src="chrome-extension://nmgnohconkldmjidgbcikocgimbambnf/images/logo_medium.png" id="popupLogo"/><div id="popupLabelContainer"><h1 id="popupLabelHeader">continue</h1></div><div id="textFieldContainer"><input type="text" maxlength="2" id="countryCode"/>(<input type="text" maxlength="3" id="areaCode"/>)<input type="text" maxlength="3" id="firstThree"/>-<input type="text" maxlength="4" id="lastFour"/><br/><button onclick="closePopup()" id="closePopupButton">cancel</button><button onclick="processInput()" id="popupSubmitButton">set number</button></div>';
@@ -90,68 +91,25 @@ function setNumberButtonPressed() {
 }
 
 function sendTextButtonPressed() {
-	//var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');
-	var time = document.getElementsByClassName('ytp-time-current')[0].innerHTML;
-	var times = time.split(":");
-	var seconds = times[times.length-1];
-	var minutes = times[times.length-2];
-	var hours = 0;
-	if(times.length>2) {
-		hours = times[0];
-	}
-
+	var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');
 	var videoURL = getVideoParameterFromURL();
-
-	var button = document.getElementById('sendTextButton');	
-
-	button.disabled = true;
-	var orig = phoneDiv.innerHTML;
-	phoneDiv.innerHTML = "<span style='padding: 0 30px;'>SENDING...</span>";
-
-	var queryString = "?youtube="+videoURL+"&phone="+userNumber+"&h="+hours+"&m="+minutes+"&s="+seconds;
-	var url = "http://ayushmehra.com/continue/sendText.php?youtube="+videoURL+"&phone="+userNumber+"&h="+hours+"&m="+minutes+"&s="+seconds;
-	chrome.runtime.sendMessage({
-	    method: 'POST',
-	    action: 'xhttp',
-	    url: url,
-	    data: queryString
-	}, function(responseText) {
-	    
-	    if(responseText=="success") { //success
-	    	
-	    	phoneDiv.innerHTML = "<span style='padding: 0 55px;'>SENT!</span>";
-
-	    	setTimeout(function(){
-	    		settingsDiv.style.display = "none";
-	    		phoneDiv.innerHTML = orig;
-	    		button.disabled = false;
-	    	}, 1000);
-
-	    } else { //failed
-	    	phoneDiv.innerHTML = "<span style='font-size: 60%;'>FAILED. TRY AGAIN LATER</font>";
-
-	    	setTimeout(function(){
-	    		settingsDiv.style.display = "none";
-	    		phoneDiv.innerHTML = orig;
-	    		button.disabled = false;
-	    	}, 1000);
-	    }
-
-	});
+	var url = chrome.extension.getURL('sendText.html')+"?youtube="+videoURL+"&phone="+userNumber+"&time="+time;
+	window.open(url,'_blank');
 }
 
 
 function init() {
-	var player = document.getElementsByClassName('ytp-chrome-controls')[0];
+	var player = document.getElementsByClassName('html5-player-chrome')[0];
 
 	var button = document.createElement('DIV');
 	button.className = "ytp-button continueCustomButton";
-	button.id = "continuePlayerButton";
-	button.setAttribute('tabindex',"36");
+	button.setAttribute('tabindex',"6201");
 
 	button.onclick = openSettingsMenu;
 
-	player.insertBefore(button,player.childNodes[8]);
+	player.insertBefore(button,player.childNodes[4]);
+
+	console.log(button);
 
 	var logoURL = chrome.extension.getURL('images/logo_medium.png');
 	var iconURL = chrome.extension.getURL('images/logo_icon.png');
@@ -165,10 +123,13 @@ function init() {
 	continueLabel.id = "continue-label";
 
 	button.appendChild(icon);
-	//button.appendChild(continueLabel);
+	button.appendChild(continueLabel);
+
+
+
 
 	settingsDiv = document.createElement('DIV');
-	settingsDiv.className = "ytp-popup";
+	settingsDiv.className = "ytp-menu-container";
 	settingsDiv.id="continueSettingsContainer";
 
 	//settingsDiv.innerHTML = '<div id="continueContainerHeader"><img id="continueLogo" src="'+logoURL+'" width="50px"/><h1 id="continueHeader">continue</h1></div><br><br><br><div id="phoneNumberContainer"></div><br/><button value="update" id="updateNumberButton">Update Number</button><br/><button value="send" id="continueSubmitButton">Send</button>';
@@ -176,7 +137,7 @@ function init() {
 	settingsDiv.style.display = "none";
 
 
-	var defaultMenu = document.getElementsByClassName('ytp-settings-menu')[0];
+	var defaultMenu = document.getElementsByClassName('ytp-menu-container')[0];
 	defaultMenu.parentNode.insertBefore(settingsDiv,defaultMenu);
 
 	sendTextButton = document.getElementById('sendTextButton');
@@ -185,20 +146,6 @@ function init() {
 
 	setNumberButton.onclick = function() {var time = document.getElementsByClassName('ytp-progress-bar-container')[0].childNodes[1].getAttribute('aria-valuenow');window.location = chrome.extension.getURL('continue_options.html')+"?video="+getVideoParameterFromURL()+"&time="+time;};
 	sendTextButton.onclick = sendTextButtonPressed;
-
-
-	var buttonRect = button.getBoundingClientRect();
-	var progressBarRect = document.getElementsByClassName('ytp-progress-bar-container')[0].getBoundingClientRect();
-	var player = document.getElementsByClassName('html5-video-content')[0];
-	var playerRect = player.getBoundingClientRect();
-
-	var buttonLeftOffset = buttonRect.left - playerRect.left;
-	var progressBarBottomOffset = parseInt(player.style.height) - (progressBarRect.top - playerRect.top);
-
-	//console.log(buttonLeftOffset+" - "+progressBarBottomOffset);
-
-	settingsDiv.style.left = buttonLeftOffset+"px";
-	settingsDiv.style.bottom = progressBarBottomOffset+15+"px";
 
 }
 

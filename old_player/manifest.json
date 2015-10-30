@@ -3,7 +3,7 @@
 
   "name": "Continue",
   "description": "Continue texts you a link to continue watching a YouTube video where you left off, at the push of a button.",
-  "version": "2.1",
+  "version": "1.1",
   "options_page":"continue_options.html",
 
   "content_scripts": [
@@ -14,13 +14,8 @@
     }
   ],
 
-  "background": {
-      "scripts": ["background.js"],
-      "persistent": false
-  },
-
   "permissions": [
-    "storage", "tabs", "https://fonts.googleapis.com/*", "http://ayushmehra.com/*"
+    "storage", "tabs", "https://fonts.googleapis.com/*"
   ],
 
   "web_accessible_resources": [
